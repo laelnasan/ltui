@@ -1,8 +1,8 @@
 package = "ltui"
-version = "2.2-1"
+version = "2.5-1"
 source = {
     url = "git://github.com/tboox/ltui",
-    tag = "v2.2"
+    tag = "v2.5"
 }
 description = {
     detailed = [[
@@ -33,6 +33,7 @@ build = {
             ["ltui"] = "src/ltui.lua",
             ["ltui.action"] = "src/ltui/action.lua",
             ["ltui.application"] = "src/ltui/application.lua",
+            ["ltui.base.bit"] = "src/ltui/base/bit.lua",
             ["ltui.base.dlist"] = "src/ltui/base/dlist.lua",
             ["ltui.base.log"] = "src/ltui/base/log.lua",
             ["ltui.base.os"] = "src/ltui/base/os.lua",
@@ -59,6 +60,7 @@ build = {
             ["ltui.point"] = "src/ltui/point.lua",
             ["ltui.program"] = "src/ltui/program.lua",
             ["ltui.rect"] = "src/ltui/rect.lua",
+            ["ltui.scrollbar"] = "src/ltui/scrollbar.lua",
             ["ltui.statusbar"] = "src/ltui/statusbar.lua",
             ["ltui.textarea"] = "src/ltui/textarea.lua",
             ["ltui.textdialog"] = "src/ltui/textdialog.lua",

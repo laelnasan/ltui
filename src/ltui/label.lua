@@ -19,11 +19,15 @@
 --
 
 -- load modules
-local log       = require("ltui/base/log")
-local view      = require("ltui/view")
-local event     = require("ltui/event")
-local action    = require("ltui/action")
-local curses    = require("ltui/curses")
+local log         = require("ltui/base/log")
+local view        = require("ltui/view")
+local event       = require("ltui/event")
+local action      = require("ltui/action")
+local curses      = require("ltui/curses")
+local luajit, bit = pcall(require, "bit")
+if not luajit then
+    bit = require("ltui/base/bit")
+end
 
 -- define module
 local label = label or view()
@@ -127,8 +131,20 @@ function label:splitext(text, width)
     for idx = 1, #lines do
         local line = lines[idx]
         while #line > width do
-            table.insert(result, line:sub(1, width))
-            line = line:sub(width + 1)
+            local size = 0
+            for i = 1, #line do
+                if not line:wcis_cont(i) then
+                    size = size + line:wcwidth(i)
+                    if size > width then
+                        table.insert(result, line:sub(1, i - 1))
+                        line = line:sub(i)
+                        break
+                    end
+                end
+            end
+            if size <= width then
+                break
+            end
         end
         table.insert(result, line)
     end

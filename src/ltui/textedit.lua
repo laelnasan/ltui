@@ -19,13 +19,18 @@
 --
 
 -- load modules
-local log       = require("ltui/base/log")
-local view      = require("ltui/view")
-local label     = require("ltui/label")
-local event     = require("ltui/event")
-local border    = require("ltui/border")
-local curses    = require("ltui/curses")
-local textarea  = require("ltui/textarea")
+local log         = require("ltui/base/log")
+local view        = require("ltui/view")
+local label       = require("ltui/label")
+local event       = require("ltui/event")
+local border      = require("ltui/border")
+local curses      = require("ltui/curses")
+local textarea    = require("ltui/textarea")
+local action      = require("ltui/action")
+local luajit, bit = pcall(require, "bit")
+if not luajit then
+    bit = require("ltui/base/bit")
+end
 
 -- define module
 local textedit = textedit or textarea()
@@ -42,8 +47,9 @@ function textedit:init(name, bounds, text)
     -- mark as selectable
     self:option_set("selectable", true)
 
-    -- disable progress
-    self:option_set("progress", false)
+    -- mark as mouseable
+    self:option_set("mouseable", true)
+    self:action_set(action.ac_on_clicked, function () return true end)
 
     -- enable multiple line
     self:option_set("multiline", true)
@@ -75,16 +81,18 @@ function textedit:on_event(e)
 
     -- update text
     if e.type == event.ev_keyboard then
-        if e.key_code > 0x1f and e.key_code < 0x7f then
-            self:text_set(self:text() .. e.key_name)
-            return true
-        elseif e.key_name == "Enter" and self:option("multiline") then
+        if e.key_name == "Enter" and self:option("multiline") then
             self:text_set(self:text() .. '\n')
             return true
         elseif e.key_name == "Backspace" then
             local text = self:text()
             if #text > 0 then
-                self:text_set(text:sub(1, #text - 1))
+                local size = 1
+                -- while continuation byte
+                while text:wcis_cont(#text - size + 1) do
+                    size = size + 1
+                end
+                self:text_set(text:sub(1, #text - size))
             end
             return true
         elseif e.key_name == "CtrlV" then
@@ -92,6 +100,9 @@ function textedit:on_event(e)
             if pastetext then
                 self:text_set(self:text() .. pastetext)
             end
+            return true
+        elseif e.key_code > 0x1f and e.key_code < 0xf8 then
+            self:text_set(self:text() .. string.char(e.key_code))
             return true
         end
     end

@@ -18,8 +18,8 @@
 --
 -- Copyright (C) 2015-2020, TBOOX Open Source Group.
 --
--- @author      ruki
--- @file        dialog.lua
+-- @author      ruki, laelnasan
+-- @file        utf8dialog.lua
 --
 require("tests/load")
 
@@ -61,11 +61,12 @@ function demo:dialog_main()
     local dialog_main = self._DIALOG_MAIN
     if not dialog_main then
         dialog_main = boxdialog:new("dialog.main", rect {1, 1, self:width() - 1, self:height() - 1}, "main dialog")
-        dialog_main:text():text_set("The project focuses on making development and building easier and provides many features (.e.g package, install, plugin, macro, action, option, task ...), so that any developer can quickly pick it up and enjoy the productivity boost when developing and building project.")
-        dialog_main:button_add("tips", "< Tips >", function (v) self:view("dialog.tips"):show(true, {focused = true}) end)
-        dialog_main:button_add("input", "< Input >", function (v) self:view("dialog.input"):show(true, {focused = true}) end)
-        dialog_main:button_add("help", "< Help >", function (v) self:insert(self:dialog_help()) end)
-        dialog_main:button_add("quit", "< Quit >", "cm_quit")
+        dialog_main:text():text_set([[LTUI是一个基于lua的跨平台字符终端UI界面库。
+此框架源于xmake中图形化菜单配置的需求，类似linux kernel的menuconf去配置编译参数，因此基于curses和lua实现了一整套跨平台的字符终端ui库。 而样式风格基本上完全参照的kconfig-frontends，当然用户也可以自己定制不同的ui风格。]])
+        dialog_main:button_add("tips", "< ☝ Tips >", function (v) self:view("dialog.tips"):show(true, {focused = true}) end)
+        dialog_main:button_add("input", "< ☺ Input >", function (v) self:view("dialog.input"):show(true, {focused = true}) end)
+        dialog_main:button_add("help", "< ☕Help >", function (v) self:insert(self:dialog_help()) end)
+        dialog_main:button_add("quit", "< ☠ Quit >", "cm_quit")
         self._DIALOG_MAIN = dialog_main
     end
     return dialog_main
