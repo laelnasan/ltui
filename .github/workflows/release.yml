@@ -21,5 +21,8 @@ jobs:
         xmake-version: latest
     - name: build
       run: xmake -y -vD
-    - name: Download a Build Artifact
-    - uses: actions/download-artifact@v2.0.5   
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: |
+          build
