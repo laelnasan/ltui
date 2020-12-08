@@ -20,7 +20,7 @@ jobs:
       with:
         xmake-version: latest
     - name: config 32 bits
-      run: xmake f -a x86
+      run: xmake f -a i386
     - name: build
       run: xmake -y -vD
     - uses: actions/upload-artifact@v2
