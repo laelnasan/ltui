@@ -19,8 +19,10 @@ jobs:
     - uses: xmake-io/github-action-setup-xmake@v1
       with:
         xmake-version: latest
+    - name: config 32 bits
+      run: xmake f -a x86
     - name: build
-      run: xmake f -a x86 -y -vD
+      run: xmake -y -vD
     - uses: actions/upload-artifact@v2
       with:
         name: build
