@@ -20,7 +20,7 @@ jobs:
       with:
         xmake-version: latest
     - name: build
-      run: xmake -y -vD
+      run: xmake f -a x86 -y -vD
     - uses: actions/upload-artifact@v2
       with:
         name: build
